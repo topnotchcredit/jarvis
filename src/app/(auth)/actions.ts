@@ -19,6 +19,10 @@ const TOO_MANY: FormState = { error: "Too many attempts. Wait a few minutes and 
 function siteUrl(): string {
   const configured = process.env.SITE_URL;
   if (configured) return configured.replace(/\/$/, "");
+  // On Vercel the production domain is provided by the platform, so email links work
+  // on the first deploy before SITE_URL has been set.
+  const vercelDomain = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+  if (vercelDomain) return `https://${vercelDomain}`;
   if (readServerEnv().APP_ENV === "production") throw new Error("SITE_URL must be set in production");
   return "http://localhost:3000";
 }
