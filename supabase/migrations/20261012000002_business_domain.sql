@@ -747,3 +747,9 @@ grant execute on function public.is_org_member(uuid) to authenticated;
 grant execute on function public.has_org_role(uuid, public.member_role[]) to authenticated;
 grant execute on function public.shares_org_with(uuid) to authenticated;
 grant execute on function public.create_organization(text) to authenticated;
+
+-- Server-side code (secret key) needs full access regardless of whether the project was
+-- created with "automatically expose new tables" on or off.
+grant usage on schema public to anon, authenticated, service_role;
+grant all on all tables in schema public to service_role;
+grant execute on all functions in schema public to service_role;
