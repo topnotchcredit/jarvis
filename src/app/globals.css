@@ -1,26 +1,90 @@
 @import "tailwindcss";
+@import "@fontsource-variable/hanken-grotesk";
+@import "@fontsource-variable/bricolage-grotesque";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Graphite surfaces, bone text, one muted gold. Gold marks what is selected or needs a decision; nothing else. */
+@theme {
+  --color-ink: #15171c;
+  --color-surface: #1c1f26;
+  --color-raised: #242831;
+  --color-line: #2f343f;
+  --color-bone: #ece8df;
+  --color-muted: #a39f95;
+  --color-gold: #c9a45c;
+  --color-gold-deep: #8a7443;
+  --color-alert: #e58b7b;
+  --color-ok: #86bd9b;
+  --font-sans: "Hanken Grotesk Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Bricolage Grotesque Variable", "Hanken Grotesk Variable", ui-sans-serif, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  color-scheme: dark;
+  background: var(--color-ink);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-ink);
+  color: var(--color-bone);
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  font-variant-numeric: tabular-nums;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+::selection {
+  background: var(--color-gold-deep);
+  color: var(--color-bone);
+}
+
+@layer components {
+  .field {
+    @apply block w-full rounded-md border border-line bg-ink px-3 py-2 text-bone placeholder:text-muted/60;
+  }
+  .field:focus-visible {
+    @apply border-gold outline-none ring-1 ring-gold;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-md bg-gold px-4 py-2 font-semibold text-ink transition-colors hover:bg-[#d8b672] disabled:cursor-not-allowed disabled:opacity-60;
+  }
+  .btn-quiet {
+    @apply inline-flex items-center justify-center rounded-md border border-line px-3 py-1.5 text-bone transition-colors hover:border-muted disabled:opacity-60;
+  }
+  .btn-danger {
+    @apply inline-flex items-center justify-center rounded-md border border-alert/60 px-4 py-2 font-semibold text-alert transition-colors hover:bg-alert/10 disabled:opacity-60;
+  }
+  .panel {
+    @apply rounded-lg border border-line bg-surface;
+  }
+  .data-table {
+    @apply w-full border-collapse text-left text-sm;
+  }
+  .data-table th {
+    @apply border-b border-line px-4 py-2 font-medium text-muted;
+  }
+  .data-table td {
+    @apply border-b border-line/60 px-4 py-2.5 align-top;
+  }
+  .data-table tr:last-child td {
+    @apply border-b-0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0s !important;
+  }
 }
